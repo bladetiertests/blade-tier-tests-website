@@ -1,0 +1,136 @@
+`index.html` is the filename. Paste the following code into the editor, not into the filename field.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050b16">
+  <title>Blade Tier Tests | BTT</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: #eaf7ff;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(ellipse at 50% 0%, #063d67 0%, transparent 55%),
+        #050810;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 7%;
+      border-bottom: 1px solid #17334a;
+    }
+    .brand { font-size: 22px; font-weight: 900; letter-spacing: 2px; }
+    .brand span { color: #00d9ff; }
+    nav a {
+      color: #b9d6e9;
+      text-decoration: none;
+      margin-left: 22px;
+    }
+    main {
+      max-width: 1050px;
+      margin: auto;
+      padding: 100px 24px 70px;
+      text-align: center;
+    }
+    .tag {
+      color: #00dcff;
+      letter-spacing: 4px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    h1 {
+      margin: 22px 0;
+      font-size: clamp(46px, 9vw, 88px);
+      line-height: 1;
+      text-shadow: 0 0 35px #007bbd88;
+    }
+    h1 span {
+      display: block;
+      color: #00cfff;
+    }
+    p {
+      color: #a8bfd2;
+      line-height: 1.8;
+      max-width: 650px;
+      margin: 20px auto;
+    }
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 32px;
+    }
+    .btn {
+      padding: 14px 22px;
+      border: 1px solid #00bfe9;
+      border-radius: 6px;
+      color: white;
+      background: #007da8;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .secondary { background: #0b1420; border-color: #29465c; }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 16px;
+      margin-top: 65px;
+      text-align: left;
+    }
+    .card {
+      padding: 24px;
+      border: 1px solid #18364e;
+      border-radius: 10px;
+      background: linear-gradient(145deg, #101d2b, #080d16);
+    }
+    .card h2 { color: #41dfff; font-size: 18px; }
+    .card p { font-size: 14px; }
+    footer {
+      padding: 24px;
+      text-align: center;
+      border-top: 1px solid #17334a;
+      color: #728ba0;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">BLADE <span>TIER TESTS</span></div>
+    <nav><a href="#kits">Kits</a><a href="#about">About</a></nav>
+  </header>
+
+  <main>
+    <div class="tag">COMPETE • PROVE • CLIMB</div>
+    <h1>YOUR SKILL.<span>YOUR TIER.</span></h1>
+    <p id="about">
+      Welcome to Blade Tier Tests — a Minecraft PvP tier-testing
+      community for players across regions. Challenge yourself,
+      earn your tier, and make your mark.
+    </p>
+    <div class="actions">
+      <a class="btn" href="https://discord.com/" target="_blank"
+         rel="noopener noreferrer">JOIN THE COMMUNITY</a>
+      <a class="btn secondary" href="#kits">EXPLORE KITS</a>
+    </div>
+
+    <section class="cards" id="kits">
+      <article class="card"><h2>⚔ Sword</h2><p>Test your sword PvP skills.</p></article>
+      <article class="card"><h2>🪓 Axe</h2><p>Put your axe combat to the test.</p></article>
+      <article class="card"><h2>💎 Crystal</h2><p>Show your crystal PvP ability.</p></article>
+      <article class="card"><h2>🛡 UHC</h2><p>Compete and earn your tier.</p></article>
+    </section>
+  </main>
+
+  <footer>Blade Tier Tests · Community-driven Minecraft PvP rankings</footer>
+</body>
+</html>
+```
