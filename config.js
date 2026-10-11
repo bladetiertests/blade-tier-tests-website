@@ -6,6 +6,6 @@
  */
 window.BTT_CONFIG = {
   API_BASE_URL: "https://bladetiertests.bladetierlist.workers.dev",
-  DISCORD_INVITE_URL: "https://discord.com",
+  DISCORD_INVITE_URL: "https://discord.gg/rAccMvx3T5",
   REFRESH_INTERVAL_MS: 60000
 };
