@@ -1,4 +1,4 @@
-
+```javascript
 const UPSTREAM = "http://vega.ender.co.in:5048";
 
 const ALLOWED_PATHS = new Set([
@@ -63,12 +63,23 @@ export default {
       );
     }
 
+    // Fail clearly if the Cloudflare secret is missing.
+    if (!env.BTT_API_KEY) {
+      return Response.json(
+        { error: "API authentication is not configured" },
+        { status: 500, headers: corsHeaders }
+      );
+    }
+
     try {
       const upstreamUrl = new URL(url.pathname + url.search, UPSTREAM);
 
       const upstream = await fetch(upstreamUrl.toString(), {
         method: "GET",
-        headers: { Accept: "application/json" },
+        headers: {
+          Accept: "application/json",
+          "X-BTT-API-Key": env.BTT_API_KEY,
+        },
         signal: AbortSignal.timeout(10000),
       });
 
@@ -89,4 +100,4 @@ export default {
     }
   },
 };
-
+```
