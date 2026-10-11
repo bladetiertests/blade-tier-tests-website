@@ -1,1 +1,6 @@
+.git
+.wrangler
 worker.js
+worker-github.js
+wrangler.jsonc
+README.md
