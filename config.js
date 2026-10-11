@@ -5,7 +5,7 @@
  * Leave blank to run the UI in offline preview mode until the API is configured.
  */
 window.BTT_CONFIG = {
-  API_BASE_URL: "",
+  API_BASE_URL: "https://bladetiertests.bladetierlist.workers.dev",
   DISCORD_INVITE_URL: "https://discord.com",
   REFRESH_INTERVAL_MS: 60000
 };
