@@ -1,4 +1,3 @@
-```javascript
 const UPSTREAM = "http://vega.ender.co.in:5048";
 
 const ALLOWED_PATHS = new Set([
@@ -15,28 +14,29 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // Keep the existing static website working.
+    // Serve the existing static website for non-API requests.
     if (!url.pathname.startsWith("/api/")) {
       return env.ASSETS.fetch(request);
     }
 
     const origin = request.headers.get("Origin");
-    const allowedOrigin = url.origin;
 
     const corsHeaders = {
-      "Access-Control-Allow-Origin": allowedOrigin,
+      "Access-Control-Allow-Origin": url.origin,
       "Vary": "Origin",
       "Content-Type": "application/json; charset=utf-8",
       "X-Content-Type-Options": "nosniff",
     };
 
-    if (origin && origin !== allowedOrigin) {
-      return new Response(
-        JSON.stringify({ error: "Origin not allowed" }),
+    // Reject requests from a different browser origin.
+    if (origin && origin !== url.origin) {
+      return Response.json(
+        { error: "Origin not allowed" },
         { status: 403, headers: corsHeaders }
       );
     }
 
+    // Handle browser preflight requests.
     if (request.method === "OPTIONS") {
       return new Response(null, {
         status: 204,
@@ -49,6 +49,7 @@ export default {
       });
     }
 
+    // Only allow GET requests to the API.
     if (request.method !== "GET") {
       return Response.json(
         { error: "Method not allowed" },
@@ -56,6 +57,7 @@ export default {
       );
     }
 
+    // Allow only the approved API endpoints.
     if (!ALLOWED_PATHS.has(url.pathname)) {
       return Response.json(
         { error: "Endpoint not allowed" },
@@ -63,7 +65,7 @@ export default {
       );
     }
 
-    // Fail clearly if the Cloudflare secret is missing.
+    // Fail safely if the Cloudflare secret is missing.
     if (!env.BTT_API_KEY) {
       return Response.json(
         { error: "API authentication is not configured" },
@@ -100,5 +102,3 @@ export default {
     }
   },
 };
-```
-
