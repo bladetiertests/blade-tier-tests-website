@@ -10,33 +10,34 @@ const ALLOWED_PATHS = new Set([
   "/api/stats",
 ]);
 
+// Read-only player profile pages: /api/player/<discord id>/profile
+const PROFILE_PATH = /^\/api\/player\/\d{1,25}\/profile$/;
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // Serve the existing static website for non-API requests.
     if (!url.pathname.startsWith("/api/")) {
       return env.ASSETS.fetch(request);
     }
 
     const origin = request.headers.get("Origin");
+    const allowedOrigin = url.origin;
 
     const corsHeaders = {
-      "Access-Control-Allow-Origin": url.origin,
+      "Access-Control-Allow-Origin": allowedOrigin,
       "Vary": "Origin",
       "Content-Type": "application/json; charset=utf-8",
       "X-Content-Type-Options": "nosniff",
     };
 
-    // Reject requests from a different browser origin.
-    if (origin && origin !== url.origin) {
-      return Response.json(
-        { error: "Origin not allowed" },
+    if (origin && origin !== allowedOrigin) {
+      return new Response(
+        JSON.stringify({ error: "Origin not allowed" }),
         { status: 403, headers: corsHeaders }
       );
     }
 
-    // Handle browser preflight requests.
     if (request.method === "OPTIONS") {
       return new Response(null, {
         status: 204,
@@ -49,7 +50,6 @@ export default {
       });
     }
 
-    // Only allow GET requests to the API.
     if (request.method !== "GET") {
       return Response.json(
         { error: "Method not allowed" },
@@ -57,15 +57,13 @@ export default {
       );
     }
 
-    // Allow only the approved API endpoints.
-    if (!ALLOWED_PATHS.has(url.pathname)) {
+    if (!ALLOWED_PATHS.has(url.pathname) && !PROFILE_PATH.test(url.pathname)) {
       return Response.json(
         { error: "Endpoint not allowed" },
         { status: 404, headers: corsHeaders }
       );
     }
 
-    // Fail safely if the Cloudflare secret is missing.
     if (!env.BTT_API_KEY) {
       return Response.json(
         { error: "API authentication is not configured" },
