@@ -184,13 +184,13 @@ function renderResults(rs){
     :`<div class="empty">No results yet. The first tests will show up here.</div>`;
 }
 async function load(){
-  const [h,p,s,r]=await Promise.allSettled([api("health"),api("players?limit=100"),api("stats"),api("results?limit=10")]);
+  const [h,p,s,r]=await Promise.allSettled([api("health"),api("players?limit=2000"),api("stats"),api("results?limit=10")]);
   const ok=h.status==="fulfilled"&&h.value&&h.value.ok;
   const st=$("#st");st.textContent=ok?"Online":"Offline";st.className=ok?"on":"off";
   if(p.status==="fulfilled"){
     players=(p.value.players||[]).sort((a,b)=>rank(a.tier)-rank(b.tier)||String(a.kit).localeCompare(b.kit)||String(a.player_name).localeCompare(b.player_name));
     const ids=new Set(players.map(x=>x.player_id));
-    $("#s-players").textContent=ids.size+(players.length>=100?"+":"");
+    $("#s-players").textContent=ids.size+(players.length>=2000?"+":"");
     fillSelect($("#f-kit"),[...new Set(players.map(x=>x.kit))].sort());
     fillSelect($("#f-tier"),[...new Set(players.map(x=>x.tier))].sort((a,b)=>rank(a)-rank(b)));
     renderTable();renderCards();
