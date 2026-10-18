@@ -87,6 +87,9 @@ dialog::backdrop{background:rgba(2,6,16,.8)}
 .seg button{background:var(--panel);color:var(--mute);border:0;padding:10px 16px;font:inherit;cursor:pointer}
 .seg button[aria-pressed=true]{background:linear-gradient(90deg,var(--blue),var(--violet));color:#fff}
 select:disabled{opacity:.45}
+.kts{line-height:1.9}
+.kt{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--mute);margin-right:12px;white-space:nowrap}
+.kt .tier{min-width:0;padding:0 7px;font-size:11px}
 @media(max-width:760px){nav{display:none}.stats{grid-template-columns:1fr 1fr}.join{flex-direction:column;text-align:center}.bar .btn{margin-left:auto}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
@@ -178,8 +181,8 @@ let mode="tier";
 function standings(kit){
   const g={};
   players.forEach(p=>{if(kit&&p.kit!==kit)return;
-    const x=g[p.player_id]=g[p.player_id]||{id:p.player_id,n:String(p.player_name),pts:0,k:0,best:99,bt:""};
-    x.pts+=pts(p.tier);x.k++;const r=rank(p.tier);if(r<x.best){x.best=r;x.bt=p.tier}});
+    const x=g[p.player_id]=g[p.player_id]||{id:p.player_id,n:String(p.player_name),pts:0,k:0,best:99,bt:"",l:[]};
+    x.pts+=pts(p.tier);x.k++;x.l.push(p);const r=rank(p.tier);if(r<x.best){x.best=r;x.bt=p.tier}});
   return Object.values(g).sort((a,b)=>b.pts-a.pts||a.best-b.best||a.n.localeCompare(b.n)).map((x,i)=>(x.pos=i+1,x));
 }
 function renderTable(){
@@ -187,9 +190,9 @@ function renderTable(){
   const none=`<tr><td colspan="5" class="empty">No placements match yet. Results appear here as soon as tests are recorded.</td></tr>`;
   $("#f-tier").disabled=mode==="pts";
   if(mode==="pts"){
-    $("#th").innerHTML="<tr><th>Rank</th><th>Player</th><th>Points</th><th>Kits</th><th>Best tier</th></tr>";
+    $("#th").innerHTML="<tr><th>Rank</th><th>Player</th><th>Points</th><th>Tiers</th></tr>";
     const rows=standings(k).filter(x=>!q||x.n.toLowerCase().includes(q));
-    $("#tb").innerHTML=rows.length?rows.map(x=>`<tr><td class="rk">${x.pos}</td><td>${who(x.id,x.n)}</td><td><b>${x.pts}</b></td><td>${x.k}</td><td>${badge(x.bt)}</td></tr>`).join(""):none;
+    $("#tb").innerHTML=rows.length?rows.map(x=>`<tr><td class="rk">${x.pos}</td><td>${who(x.id,x.n)}</td><td><b>${x.pts}</b></td><td class="kts">${x.l.slice().sort((a,b)=>rank(a.tier)-rank(b.tier)).map(p=>`<span class="kt">${esc(p.kit)} <b class="tier ${tc(p.tier)}">${esc(p.tier)}</b></span>`).join("")}</td></tr>`).join(""):none;
     return;
   }
   $("#th").innerHTML="<tr><th>Rank</th><th>Player</th><th>Kit</th><th>Tier</th><th>Updated</th></tr>";
