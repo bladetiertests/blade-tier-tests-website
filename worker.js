@@ -1,4 +1,4 @@
-const UPSTREAM = "http://vega.ender.co.in:5048";
+const UPSTREAM = "http://luna.ender.co.in:5581";
 
 const ALLOWED_PATHS = new Set([
   "/api/health",
